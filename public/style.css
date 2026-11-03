@@ -66,6 +66,10 @@ small { color: var(--muted); }
 .btn.icon { padding: 4px 9px; }
 .link { background: none; border: 0; color: var(--accent); font-size: 12px; padding: 0; }
 
+/* Desktop app: native traffic lights sit in the top bar, which drags the window */
+.app .topbar { padding-left: 86px; -webkit-app-region: drag; }
+.app .topbar input, .app .topbar button { -webkit-app-region: no-drag; }
+
 /* ---------- Layout ---------- */
 main { display: grid; grid-template-columns: 420px 1fr; min-height: 0; }
 .sidebar { display: grid; grid-template-rows: 1fr 260px; border-right: 1px solid var(--line); min-height: 0; background: rgba(18, 21, 28, .55); }

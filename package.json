@@ -1,9 +1,49 @@
 {
   "name": "macdirstat",
+  "productName": "MacDirStat",
   "version": "1.0.0",
-  "description": "Visualisez l'espace disque de votre Mac sous forme de treemap (à la WinDirStat), sans dépendance.",
-  "bin": { "macdirstat": "bin/macdirstat.js" },
-  "scripts": { "start": "node bin/macdirstat.js" },
-  "engines": { "node": ">=18" },
-  "license": "MIT"
+  "description": "Visualisez l'espace disque de votre Mac sous forme de treemap (à la WinDirStat).",
+  "main": "electron/main.js",
+  "bin": {
+    "macdirstat": "bin/macdirstat.js"
+  },
+  "scripts": {
+    "start": "node bin/macdirstat.js",
+    "app": "electron .",
+    "dist": "electron-builder --mac --publish never"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "45.2.1",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.inprogress.macdirstat",
+    "files": [
+      "electron/**",
+      "lib/**",
+      "public/**",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "build/icon.png",
+      "identity": "-",
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "artifactName": "MacDirStat-${version}-${arch}.${ext}"
+    }
+  }
 }
