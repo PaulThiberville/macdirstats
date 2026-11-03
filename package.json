@@ -1,0 +1,9 @@
+{
+  "name": "macdirstat",
+  "version": "1.0.0",
+  "description": "Visualisez l'espace disque de votre Mac sous forme de treemap (à la WinDirStat), sans dépendance.",
+  "bin": { "macdirstat": "bin/macdirstat.js" },
+  "scripts": { "start": "node bin/macdirstat.js" },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

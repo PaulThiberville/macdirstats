@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MacDirStat</title>
+  <link rel="stylesheet" href="/style.css">
+  <script>window.TOKEN = '__TOKEN__';</script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo"><i></i><i></i><i></i></span>MacDirStat</div>
+    <form id="scanForm" class="scan">
+      <input id="pathInput" spellcheck="false" autocomplete="off" placeholder="/Users/…">
+      <button type="button" id="pickBtn" class="btn ghost">Choisir…</button>
+      <button type="submit" class="btn primary">Analyser</button>
+    </form>
+    <div id="summary" class="summary"></div>
+  </header>
+
+  <main>
+    <aside class="sidebar">
+      <section class="panel tree-panel">
+        <div class="panel-head">Dossiers</div>
+        <div class="row cols"><span>Nom</span><span>Taille</span><span>Fichiers</span></div>
+        <div id="tree" class="tree" tabindex="0"><div id="treeInner"></div></div>
+      </section>
+      <section class="panel types-panel">
+        <div class="panel-head">Types de fichiers <button id="clearExt" class="link" hidden>Tout afficher</button></div>
+        <div id="types" class="types"></div>
+      </section>
+    </aside>
+
+    <section class="viz">
+      <nav class="crumbs">
+        <button id="upBtn" class="btn icon" title="Dossier parent (⌫)">↑</button>
+        <div id="crumbs"></div>
+      </nav>
+      <div id="mapWrap" class="map-wrap">
+        <canvas id="map"></canvas>
+        <canvas id="overlay"></canvas>
+        <div id="tooltip" class="tooltip" hidden></div>
+      </div>
+      <footer id="selbar" class="selbar">
+        <div class="sel-info"><span id="selSwatch" class="swatch"></span><div><b id="selName">Survolez la carte</b><small id="selPath">Double-clic sur un dossier pour zoomer</small></div></div>
+        <div id="selStats" class="sel-stats"></div>
+        <div class="sel-actions">
+          <button id="zoomBtn" class="btn ghost" disabled>Zoomer</button>
+          <button id="revealBtn" class="btn ghost" disabled>Afficher dans le Finder</button>
+          <button id="trashBtn" class="btn danger" disabled>Corbeille</button>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <div id="scanOverlay" class="scan-overlay" hidden>
+    <div class="scan-card">
+      <div class="pulse"></div>
+      <h2>Analyse en cours</h2>
+      <div class="scan-stats"><div><b id="scFiles">0</b><small>fichiers</small></div><div><b id="scSize">0</b><small>analysés</small></div><div><b id="scTime">0 s</b><small>écoulé</small></div></div>
+      <code id="scCurrent"></code>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="/app.js"></script>
+</body>
+</html>
