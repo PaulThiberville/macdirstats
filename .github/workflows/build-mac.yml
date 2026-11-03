@@ -1,9 +1,12 @@
 name: Build macOS app
 
+# Publishes a GitHub Release with the .dmg each time the version in package.json changes.
+# To ship a new version: bump "version" in package.json and push to master.
 on:
-  workflow_dispatch:
   push:
-    tags: ['v*']
+    branches: [master]
+    paths: ['package.json', 'electron/**', 'lib/**', 'public/**', '.github/workflows/build-mac.yml']
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,20 +14,29 @@ permissions:
 jobs:
   build:
     runs-on: macos-latest # Apple Silicon
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Skip if this version is already released
+        id: version
+        run: |
+          V="v$(node -p "require('./package.json').version")"
+          echo "tag=$V" >> "$GITHUB_OUTPUT"
+          if gh release view "$V" >/dev/null 2>&1; then echo "exists=true" >> "$GITHUB_OUTPUT"; fi
+
       - uses: actions/setup-node@v4
+        if: steps.version.outputs.exists != 'true'
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run dist
-      - uses: actions/upload-artifact@v4
-        with:
-          name: MacDirStat-dmg
-          path: dist/*.dmg
-      - name: Publish release (tags only)
-        if: startsWith(github.ref, 'refs/tags/')
-        run: gh release create "$GITHUB_REF_NAME" dist/*.dmg --title "MacDirStat $GITHUB_REF_NAME" --generate-notes
-        env:
-          GH_TOKEN: ${{ github.token }}
+
+      - if: steps.version.outputs.exists != 'true'
+        run: npm ci && npm run dist
+
+      - name: Publish release
+        if: steps.version.outputs.exists != 'true'
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" dist/*.dmg \
+            --target "$GITHUB_SHA" --title "MacDirStat ${{ steps.version.outputs.tag }}" --generate-notes

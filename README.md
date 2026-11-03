@@ -7,25 +7,16 @@ Visualisez ce qui occupe l'espace disque de votre Mac sous forme de **treemap**,
 - **Tailles exactes** : c'est l'espace réellement occupé sur le disque (comme `du`). Les fichiers iCloud non téléchargés et les fichiers creux APFS sont donc comptés correctement, et les liens physiques ne sont comptés qu'une fois.
 - **Actions** : afficher dans le Finder, mettre à la corbeille (récupérable).
 
-## Application Mac (.dmg)
+## Installer
 
-**Télécharger** : onglet *Releases* du dépôt, ou *Actions › Build macOS app › Artifacts*.
+1. Téléchargez le `.dmg` depuis la **[dernière Release](https://github.com/paulthiberville/macdirstats/releases/latest)**.
+2. Ouvrez-le et glissez **MacDirStat** dans *Applications*.
+3. **Premier lancement uniquement** : l'app n'est pas notarisée par Apple, donc macOS la bloque. Ouvrez Réglages Système › Confidentialité et sécurité et cliquez sur **Ouvrir quand même**.
+4. Recommandé : ajoutez MacDirStat à *Accès complet au disque*, dans ce même panneau, pour pouvoir tout analyser.
 
-**Construire soi-même** sur un Mac :
+Ensuite, il suffit d'ouvrir l'app : elle analyse votre dossier personnel dès le lancement.
 
-```bash
-npm install
-npm run app    # lancer en mode développement
-npm run dist   # génère dist/MacDirStat-1.0.0-arm64.dmg
-```
-
-**Publier une version** : `git tag v1.1.0 && git push --tags`. GitHub Actions construit le `.dmg` et l'attache à une Release.
-
-**Premier lancement** : l'app est signée ad-hoc, mais pas notarisée par Apple (il faudrait un compte développeur à 99 $/an). macOS la bloque donc au premier lancement. Pour l'autoriser, deux options :
-- ouvrir Réglages Système › Confidentialité et sécurité, puis cliquer sur *Ouvrir quand même* ;
-- ou lancer `xattr -dr com.apple.quarantine /Applications/MacDirStat.app`.
-
-Pour tout analyser, ajoutez **MacDirStat** à la liste *Accès complet au disque*.
+**Publier une nouvelle version** : modifiez `version` dans `package.json` et poussez sur `master`. GitHub Actions construit le `.dmg` et crée la Release. Pour construire en local sur un Mac : `npm install && npm run dist`.
 
 ## En ligne de commande (sans Electron)
 
